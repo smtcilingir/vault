@@ -1,0 +1,16 @@
+listener "tcp" {
+  address          = "0.0.0.0:8200"
+  cluster_address  = "{{ansible_host}}:8201"
+  tls_disable      = "true"
+}
+
+storage "etcd" {
+  address    = "{% for host in  etcd_hosts | sort %}http://{{ host }}:{{ etcd_port }}{{ "," if not loop.last else ""}}{% endfor %}"
+  etcd_api   = "v3"
+  username   = "vault"
+  password   = "HGTZCCW9nZgcYNdY"
+  path    = "vault/"
+}
+
+api_addr = "http://{{ansible_host}}:8200"
+cluster_addr = "https://{{ansible_host}}:8201"

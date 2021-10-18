@@ -1,0 +1,9 @@
+vault_version: 1.8.2
+vault_package_directory: "vault-v{{ vault_version }}-linux-64-bit"
+vault_package_file_name: "{{ vault_package_directory }}.zip"
+vault_installation_path: "/usr/local/bin/vault"
+etcd_hosts:
+  - etcdhost1
+  - etcdhost2
+  - etcdhost3
+etcd_port: 2379

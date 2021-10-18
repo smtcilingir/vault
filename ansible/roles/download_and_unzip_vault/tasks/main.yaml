@@ -1,0 +1,11 @@
+
+- name: download vault package
+  ansible.builtin.get_url:
+    url: https://releases.hashicorp.com/vault/{{ vault_version }}/vault_{{ vault_version }}_linux_amd64.zip
+    dest: /tmp/{{ vault_package_file_name }}
+
+- name: Extract {{ vault_package_file_name }} into /tmp
+  ansible.builtin.unarchive:
+    src: /tmp/{{ vault_package_file_name }}
+    dest: /tmp/vault
+    remote_src: yes

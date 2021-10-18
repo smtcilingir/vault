@@ -1,0 +1,46 @@
+- name: add vault user group
+  ansible.builtin.group:
+    name: vault
+    system: yes
+
+- name: add vault user
+  ansible.builtin.user:
+    name: vault
+    shell: /bin/bash
+    group: vault
+    home: /var/lib/vault
+    system: yes
+    comment: vault service user
+
+- name: copy vault files to "{{ vault_installation_path }}"
+  ansible.builtin.copy:
+    src: "/tmp/vault"
+    dest: "{{ vault_installation_path }}"
+    remote_src: yes
+    owner: vault
+    group: vault
+    mode: 0755
+
+- name: Create a systemd service file for vault
+  ansible.builtin.template:
+    src: vault.service.j2
+    dest: /etc/systemd/system/vault.service
+    owner: root
+    group: root
+    mode: 0644
+  notify: systemd daemon reload
+
+- name: Create configuration file for vault
+  ansible.builtin.template:
+    src: vault_server.hcl.j2
+    dest: /etc/vault/vault_server.hcl
+    owner: vault
+    group: vault
+    mode: 0600
+  notify: reload vault service
+
+- name: start vault service
+  ansible.builtin.systemd:
+    name: vault
+    enabled: true
+    state: started 

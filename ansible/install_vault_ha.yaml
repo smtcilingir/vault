@@ -1,0 +1,8 @@
+- name: "Ubuntu 20.04 ayarları"
+  hosts: 
+    - vault
+  become: yes
+  roles:
+    - download_and_unzip_vault
+    - install_and_configure_vault
+    - initialize_vault

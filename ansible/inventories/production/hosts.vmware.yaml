@@ -1,0 +1,20 @@
+plugin: vmware_vm_inventory
+strict: false
+hostname: vsphere url
+username: vsphere user name
+password: vsphere password
+validate_certs: false
+with_tags: True
+hostnames:
+- config.name
+properties:
+- 'config.name'
+- 'config.guestId'
+- 'guest.ipAddress'
+- 'summary.runtime.powerState'
+keyed_groups:
+- key: tag_category.vault
+  prefix: vault
+with_nested_properties: True
+filters:
+  - tag_category.vault is defined
